@@ -1,20 +1,27 @@
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
 import 'package:old_book/about.dart';
 import 'package:old_book/buy_old_book.dart';
 import 'package:old_book/donate_old_book.dart';
 import 'package:old_book/category.dart';
+import 'package:old_book/home.dart';
 import 'package:old_book/sell_old_book.dart';
 import 'package:old_book/settings.dart';
 
 import 'login.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Old_Book',
       home: Login(),
     );
@@ -36,11 +43,12 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var _height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text(title),
+        title: Text("Old book"),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -48,7 +56,9 @@ class MyHomePage extends StatelessWidget {
               color: Colors.white,
             ),
             onPressed: () {
-              // do something
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return HomePage();
+              }));
             },
           )
         ],
@@ -104,11 +114,11 @@ class MyHomePage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
-        child: Container(
+        child: SingleChildScrollView(
             child: Column(
           children: [
             Container(
-              height: 600,
+              height: _height,
               child: GridView.builder(
                 itemCount: 6,
                 itemBuilder: (context, index) {
