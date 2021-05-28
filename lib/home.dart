@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:old_book/chat.dart';
-
 
 class HomePage extends StatefulWidget {
   //String userId;
@@ -35,13 +33,14 @@ class HomePageState extends State<HomePage> {
   getCurrentUserId() async {
     var currentUser = await FirebaseAuth.instance.currentUser;
     String id = currentUser.uid;
-    String url = currentUser.photoUrl;
+    String url = currentUser.photoURL;
     setState(() {
       userId = id;
       if (url != null) {
         photoUrl = url;
       } else {
-        photoUrl = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fone-person&psig=AOvVaw0xphJEp-I1hhtp5VAOsOaT&ust=1622110033168000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPing_eM5_ACFQAAAAAdAAAAABAD";
+        photoUrl =
+            "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fone-person&psig=AOvVaw0xphJEp-I1hhtp5VAOsOaT&ust=1622110033168000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPing_eM5_ACFQAAAAAdAAAAABAD";
       }
     });
   }
@@ -52,7 +51,6 @@ class HomePageState extends State<HomePage> {
         appBar: AppBar(
           brightness: Brightness.light,
           backgroundColor: Colors.white,
-         
           title: Text("Chat",
               style: TextStyle(
                   color: Colors.black,
