@@ -20,7 +20,7 @@ class LoginPageState extends State<Login> {
   SharedPreferences prefs;
   bool isLoading = false;
   bool isLoggedIn = false;
-  FirebaseUser currentUser;
+  var currentUser;
 
   @override
   void initState() {
@@ -35,10 +35,13 @@ class LoginPageState extends State<Login> {
     prefs = await SharedPreferences.getInstance();
     isLoggedIn = await googleSignIn.isSignedIn();
     if (isLoggedIn) {
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>MyHomePage(
-      )));
+     
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MyHomePage()));
     }
-    
+     setState(() {
+        isLoading = false;
+      });
   }
 
   Future<Null> handleSignIn() async {
@@ -87,9 +90,9 @@ class LoginPageState extends State<Login> {
       setState(() {
         isLoading = false;
       });
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>MyHomePage()));
-    }
-    else{
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MyHomePage()));
+    } else {
       setState(() {
         isLoading = false;
       });
@@ -106,24 +109,29 @@ class LoginPageState extends State<Login> {
           ),
           centerTitle: true,
         ),
-        body: isLoading ? Center(child: CircularProgressIndicator(),) : Stack(children: <Widget>[
-          Center(
-            child: FlatButton(
-              onPressed: handleSignIn,
-              child: Text(
-                "Sign In With Google",
-                style: TextStyle(fontSize: 16),
-              ),
-              color: Color(0xffdd4b39),
-              highlightColor: Color(0xffff7f7f),
-              splashColor: Colors.transparent,
-              textColor: Colors.white,
-              padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
-            ),
-          ),
-          Positioned(
-            child: isLoading ? Center(child: const CircularProgressIndicator()) : Container()
-          )
-        ]));
+        body: isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Stack(children: <Widget>[
+                Center(
+                  child: FlatButton(
+                    onPressed: handleSignIn,
+                    child: Text(
+                      "Sign In With Google",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    color: Color(0xffdd4b39),
+                    highlightColor: Color(0xffff7f7f),
+                    splashColor: Colors.transparent,
+                    textColor: Colors.white,
+                    padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
+                  ),
+                ),
+                Positioned(
+                    child: isLoading
+                        ? Center(child: const CircularProgressIndicator())
+                        : Container())
+              ]));
   }
 }
