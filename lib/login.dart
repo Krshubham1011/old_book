@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:old_book/const.dart';
 import 'package:old_book/main.dart';
@@ -39,9 +38,7 @@ class LoginPageState extends State<Login> {
       Navigator.push(context, MaterialPageRoute(builder: (context)=>MyHomePage(
       )));
     }
-    setState(() {
-      isLoading = false;
-    });
+    
   }
 
   Future<Null> handleSignIn() async {
@@ -54,7 +51,7 @@ class LoginPageState extends State<Login> {
     GoogleSignInAuthentication googleAuth = await googleUser.authentication;
     final AuthCredential credential = GoogleAuthProvider.getCredential(
         accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-    FirebaseUser firebaseUser =
+    var firebaseUser =
         (await firebaseAuth.signInWithCredential(credential)).user;
     if (firebaseUser != null) {
       //If user is already Signed In
@@ -109,7 +106,7 @@ class LoginPageState extends State<Login> {
           ),
           centerTitle: true,
         ),
-        body: Stack(children: <Widget>[
+        body: isLoading ? Center(child: CircularProgressIndicator(),) : Stack(children: <Widget>[
           Center(
             child: FlatButton(
               onPressed: handleSignIn,
