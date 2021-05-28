@@ -1,7 +1,11 @@
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
+import 'package:old_book/RegisterScreen.dart';
 import 'package:old_book/about.dart';
+import 'package:old_book/auth.dart';
 import 'package:old_book/buy_old_book.dart';
 import 'package:old_book/donate_old_book.dart';
 import 'package:old_book/category.dart';
@@ -23,7 +27,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Old_Book',
-      home: Login(),
+      home:(userData() == null) ?  RegisterScreen()
+       : MyHomePage()
     );
   }
 }
@@ -86,9 +91,13 @@ class MyHomePage extends StatelessWidget {
                       fit: BoxFit.cover)),
             ),
             ListTile(
-              title: Text('Login'),
-              onTap: () {
-                Navigator.pop(context);
+              title: Text('Log out'),
+              onTap: () async {
+                await FirebaseAuth.instance.signOut().then((value) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return RegisterScreen();
+                  }));
+                });
               },
             ),
             ListTile(
@@ -112,100 +121,105 @@ class MyHomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
-        child: SingleChildScrollView(
-            child: Column(
-          children: [
-            Container(
-              height: _height,
-              child: GridView.builder(
-                itemCount: 6,
-                itemBuilder: (context, index) {
-                  print(index);
-                  return InkWell(
-                    onTap: () {
-                      if (index == 0) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Buyoldbook()),
-                        );
-                      }
-                      if (index == 1) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Selloldbook()),
-                        );
-                      }
-                      if (index == 2) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Donateoldbook()),
-                        );
-                      }
-                      if (index == 3) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Settings()),
-                        );
-                      }
-                      if (index == 4) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => About()),
-                        );
-                      }
-                      if (index == 5) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Category()),
-                        );
-                      }
-                    },
-                    child: Card(
-                      elevation: 10,
-                      child: Image.asset(
-                        values[index],
-                        fit: BoxFit.cover,
+      body: WillPopScope(
+        onWillPop: () {
+        SystemNavigator.pop();
+      },
+              child: Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
+          child: SingleChildScrollView(
+              child: Column(
+            children: [
+              Container(
+                height: _height,
+                child: GridView.builder(
+                  itemCount: 6,
+                  itemBuilder: (context, index) {
+                    print(index);
+                    return InkWell(
+                      onTap: () {
+                        if (index == 0) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Buyoldbook()),
+                          );
+                        }
+                        if (index == 1) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Selloldbook()),
+                          );
+                        }
+                        if (index == 2) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Donateoldbook()),
+                          );
+                        }
+                        if (index == 3) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Settings()),
+                          );
+                        }
+                        if (index == 4) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => About()),
+                          );
+                        }
+                        if (index == 5) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Category()),
+                          );
+                        }
+                      },
+                      child: Card(
+                        elevation: 10,
+                        child: Image.asset(
+                          values[index],
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                  );
-                },
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 8),
-              child: Container(
-                height: 100,
-                width: double.infinity,
-                child: Carousel(
-                  autoplay: true,
-                  overlayShadowSize: 0.1,
-                  showIndicator: false,
-                  boxFit: BoxFit.fill,
-                  images: [
-                    Image.asset(
-                      "assets/4.jpg",
-                      fit: BoxFit.cover,
-                    ),
-                    Image.asset(
-                      "assets/5.png",
-                      fit: BoxFit.cover,
-                    ),
-                    Image.asset(
-                      "assets/6.jpg",
-                      fit: BoxFit.cover,
-                    )
-                  ],
+                    );
+                  },
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
                 ),
               ),
-            ),
-          ],
-        )),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8),
+                child: Container(
+                  height: 100,
+                  width: double.infinity,
+                  child: Carousel(
+                    autoplay: true,
+                    overlayShadowSize: 0.1,
+                    showIndicator: false,
+                    boxFit: BoxFit.fill,
+                    images: [
+                      Image.asset(
+                        "assets/4.jpg",
+                        fit: BoxFit.cover,
+                      ),
+                      Image.asset(
+                        "assets/5.png",
+                        fit: BoxFit.cover,
+                      ),
+                      Image.asset(
+                        "assets/6.jpg",
+                        fit: BoxFit.cover,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          )),
+        ),
       ),
     );
   }
