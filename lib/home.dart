@@ -31,20 +31,18 @@ class HomePageState extends State<HomePage> {
   }
 
   getCurrentUserId() async {
-    var currentUser = await FirebaseAuth.instance.currentUser;
+    FirebaseUser currentUser = await FirebaseAuth.instance.currentUser;
     String id = currentUser.uid;
-    String url = currentUser.photoURL;
+    String url = currentUser.photoUrl;
     setState(() {
       userId = id;
       if (url != null) {
         photoUrl = url;
       } else {
-        photoUrl =
-            "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fone-person&psig=AOvVaw0xphJEp-I1hhtp5VAOsOaT&ust=1622110033168000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPing_eM5_ACFQAAAAAdAAAAABAD";
+        photoUrl = "https://media.istockphoto.com/vectors/user-avatar-profile-icon-black-vector-illustration-vector-id1209654046?k=6&m=1209654046&s=612x612&w=0&h=sNiHvwJm5SPrpTCjz-7eqSDqew5-f2hASM2FrGLtMJ4=";
       }
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
