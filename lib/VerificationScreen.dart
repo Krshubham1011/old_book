@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -10,6 +11,7 @@ import 'package:old_book/LoaderDialog.dart';
 import 'package:old_book/main.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class VerificationScreen extends StatefulWidget {
   final name, phoneNo;
@@ -29,6 +31,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
   String errorMsg = '';
   var timeLeft = 120;
   var _timeleft;
+  var currentUser;
+  SharedPreferences prefs;
 
   Timer _timer;
   int second1 = 120;
@@ -57,6 +61,38 @@ class _VerificationScreenState extends State<VerificationScreen> {
         },
       ),
     );
+  }
+
+  addData(var user, var userName) async {
+    prefs = await SharedPreferences.getInstance();
+    final QuerySnapshot result = await Firestore.instance
+        .collection('users')
+        .where('id', isEqualTo: user.uid)
+        .getDocuments();
+    final List<DocumentSnapshot> documents = result.documents;
+    if (documents.length == 0) {
+      Firestore.instance.collection('users').document(user.uid).setData({
+        'nickname': userName,
+        'photoUrl':
+            "https://media.istockphoto.com/vectors/user-avatar-profile-icon-black-vector-illustration-vector-id1209654046?k=6&m=1209654046&s=612x612&w=0&h=sNiHvwJm5SPrpTCjz-7eqSDqew5-f2hASM2FrGLtMJ4=",
+        'id': user.uid,
+        'createdAt': DateTime.now().millisecondsSinceEpoch.toString(),
+        'flag': 0
+      });
+      //Save data locally
+      currentUser = user;
+      await prefs.setString('id', currentUser.uid);
+      await prefs.setString('nickname', userName);
+      await prefs.setString('photoUrl',
+          "https://media.istockphoto.com/vectors/user-avatar-profile-icon-black-vector-illustration-vector-id1209654046?k=6&m=1209654046&s=612x612&w=0&h=sNiHvwJm5SPrpTCjz-7eqSDqew5-f2hASM2FrGLtMJ4=");
+    } else {
+      //Write Data Locally
+      await prefs.setString('id', documents[0]['id']);
+      await prefs.setString('nickname', userName);
+      await prefs.setString('photoUrl',
+          "https://media.istockphoto.com/vectors/user-avatar-profile-icon-black-vector-illustration-vector-id1209654046?k=6&m=1209654046&s=612x612&w=0&h=sNiHvwJm5SPrpTCjz-7eqSDqew5-f2hASM2FrGLtMJ4=");
+      await prefs.setString('aboutMe', documents[0]['aboutMe']);
+    }
   }
 
   verifyPhoneNo() async {
@@ -245,6 +281,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 await DatabaseHandler().addUserDetail(
                                     widget.name, widget.phoneNo, teamId);
                               }
+                              addData(currUser, widget.name);
                               Navigator.pop(context);
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {

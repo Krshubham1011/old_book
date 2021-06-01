@@ -9,12 +9,7 @@ import 'package:old_book/auth.dart';
 import 'package:old_book/buy_old_book.dart';
 import 'package:old_book/donate_old_book.dart';
 import 'package:old_book/category.dart';
-import 'package:old_book/home.dart';
-import 'package:old_book/sell_old_book.dart';
-import 'package:old_book/settings.dart';
-
-import 'login.dart';
-
+import 'package:old_book/home.dart';  
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -25,11 +20,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Old_Book',
-      home:(userData() == null) ?  RegisterScreen()
-       : MyHomePage()
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Old_Book',
+        home: (userData() == null) ? RegisterScreen() : MyHomePage());
   }
 }
 
@@ -49,17 +42,17 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _height = MediaQuery.of(context).size.height;
-    return Scaffold(
+    var scaffold = Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.green,
         title: Text("Old book"),
         actions: <Widget>[
           IconButton(
-            icon: Icon(
+            icon: Icon( 
               Icons.message_sharp,
               color: Colors.white,
-            ),
+            ),  
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return HomePage();
@@ -123,9 +116,9 @@ class MyHomePage extends StatelessWidget {
       ),
       body: WillPopScope(
         onWillPop: () {
-        SystemNavigator.pop();
-      },
-              child: Padding(
+          SystemNavigator.pop();
+        },
+        child: Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
           child: SingleChildScrollView(
               child: Column(
@@ -141,7 +134,8 @@ class MyHomePage extends StatelessWidget {
                         if (index == 0) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Buyoldbook()),
+                            MaterialPageRoute(
+                                builder: (context) => Buyoldbook()),
                           );
                         }
                         if (index == 1) {
@@ -222,5 +216,6 @@ class MyHomePage extends StatelessWidget {
         ),
       ),
     );
+    return scaffold;
   }
 }
