@@ -8,8 +8,11 @@ import 'package:old_book/about.dart';
 import 'package:old_book/auth.dart';
 import 'package:old_book/buy_old_book.dart';
 import 'package:old_book/donate_old_book.dart';
-import 'package:old_book/category.dart';
-import 'package:old_book/home.dart';  
+import 'package:old_book/feedback.dart';
+import 'package:old_book/home.dart';
+import 'package:old_book/sell_old_book.dart';
+import 'package:old_book/settings.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -49,10 +52,10 @@ class MyHomePage extends StatelessWidget {
         title: Text("Old book"),
         actions: <Widget>[
           IconButton(
-            icon: Icon( 
+            icon: Icon(
               Icons.message_sharp,
               color: Colors.white,
-            ),  
+            ),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return HomePage();
@@ -167,7 +170,7 @@ class MyHomePage extends StatelessWidget {
                         if (index == 5) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Category()),
+                            MaterialPageRoute(builder: (context) => Feedback()),
                           );
                         }
                       },

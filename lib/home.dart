@@ -31,7 +31,7 @@ class HomePageState extends State<HomePage> {
   }
 
   getCurrentUserId() async {
-    FirebaseUser currentUser = await FirebaseAuth.instance.currentUser;
+    var currentUser = await FirebaseAuth.instance.currentUser;
     String id = currentUser.uid;
     String url = currentUser.photoUrl;
     setState(() {
