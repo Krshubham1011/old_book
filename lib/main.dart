@@ -5,13 +5,14 @@ import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:old_book/RegisterScreen.dart';
 import 'package:old_book/about.dart';
+import 'package:old_book/app_feedback.dart';
 import 'package:old_book/auth.dart';
 import 'package:old_book/buy_old_book.dart';
 import 'package:old_book/donate_old_book.dart';
-import 'package:old_book/feedback.dart';
 import 'package:old_book/home.dart';
 import 'package:old_book/sell_old_book.dart';
 import 'package:old_book/settings.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -170,7 +171,7 @@ class MyHomePage extends StatelessWidget {
                         if (index == 5) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Feedback()),
+                            MaterialPageRoute(builder: (context) => AppFeedback()),
                           );
                         }
                       },
